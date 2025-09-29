@@ -1,6 +1,6 @@
 # SunshineCTF 2025 — Writeups
 
-Below are all challenge writeups consolidated on one page for easy reading on GitHub.
+
 
 ---
 
