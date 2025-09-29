@@ -33,3 +33,7 @@ Remotely interestingf/*.dmp
 # OS/editor clutter
 .DS_Store
 Thumbs.db
+
+# Databases
+*.db
+
