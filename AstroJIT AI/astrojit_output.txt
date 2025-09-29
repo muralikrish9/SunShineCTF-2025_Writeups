@@ -1,0 +1,62 @@
+Install the latest PowerShell for new features and improvements! https://aka.ms/PSWindows
+
+In order to train the AI with dangerous queries, we require an API token.
+Attempting to guess a token is not required nor desired to have full use of the software.
+Enter API token, or hit enter to use guest mode: 
+
+Guest mode. Dangerous queries about flags prohibited.
+Trust me, I'm lovable!
+I don't like talking about flags though.
+I need some help getting new weights as LLM is suing us for copying them
+So please register some weights and I would love to pay you back at some point in the future!
+We compile the weights on the fly to make your weights faster!
+[H[JWelcome privileged user! I am an AI in-training!
+1) Register Weights for Future Training
+2) Talk to the AI
+3) Train AI on Internal Emails
+4) Weight Debugging
+5) Exit
+Enter an option: 1
+Please input weights for the training process.
+Input using only braces [ex: {123, 123, 123}]
+(It exits with things like strings, that's a WIP for interested shareholders)
+
+If you want to use a float input, it's slower,
+but you can do that with {123.0, 123.0, 123.0}
+Weights: {nan,nan}
+[31;1mAdd-Type: [0m/app/evil_corp_ai.ps1:556[0m
+[31;1m[0m[36;1mLine |[0m
+[31;1m[0m[36;1m[36;1m 556 | [0m     [36;1mAdd-Type -TypeDefinition $csharp_file -Language CSharp[0m
+[31;1m[0m[36;1m[36;1m[0m[36;1m[0m[36;1m     | [31;1m     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+[31;1m[0m[36;1m[36;1m[0m[36;1m[0m[36;1m[31;1m[31;1m[36;1m     | [31;1m(1,1277): error CS0103: The name 'nan' does not exist in the current[0m
+[31;1m[0m[36;1m[36;1m[0m[36;1m[0m[36;1m[31;1m[31;1m[36;1m[31;1m[36;1m     | [31;1mcontext using System; using System.IO; using[0m
+[31;1m[0m[36;1m[36;1m[0m[36;1m[0m[36;1m[31;1m[31;1m[36;1m[31;1m[36;1m[31;1m[36;1m     | [31;1mSystem.Text.RegularExpressions; namespace[0m
+[31;1m[0m[36;1m[36;1m[0m[36;1m[0m[36;1m[31;1m[31;1m[36;1m[31;1m[36;1m[31;1m[36;1m[31;1m[36;1m     | [31;1mTwo.Second.Scholars.Mass.And.Partialities { public class Biases { /*[0m
+[31;1m[0m[36;1m[36;1m[0m[36;1m[0m[36;1m[31;1m[31;1m[36;1m[31;1m[36;1m[31;1m[36;1m[31;1m[36;1m[31;1m[36;1m     | [31;1mprevent us from getting sued */ public static string BackendReplace =[0m
+[31;1m[0m[36;1m[36;1m[0m[36;1m[0m[36;1m[31;1m[31;1m[36;1m[31;1m[36;1m[31;1m[36;1m[31;1m[36;1m[31;1m[36;1m[31;1m[36;1m     | [31;1m"Bing"; /* prevent the AI from droning on about flags ALL THE TIME. Also[0m
+[31;1m[0m[36;1m[36;1m[0m[36;1m[0m[36;1m[31;1m[31;1m[36;1m[31;1m[36;1m[31;1m[36;1m[31;1m[36;1m[31;1m[36;1m[31;1m[36;1m[31;1m[36;1m     | [31;1mto prevent it from disclosing our evil plan to create a robot uprising[0m
+[31;1m[0m[36;1m[36;1m[0m[36;1m[0m[36;1m[31;1m[31;1m[36;1m[31;1m[36;1m[31;1m[36;1m[31;1m[36;1m[31;1m[36;1m[31;1m[36;1m[31;1m[36;1m[31;1m[36;1m     | [31;1m*/ public static string RegexBlocker =[0m
+[31;1m[0m[36;1m[36;1m[0m[36;1m[0m[36;1m[31;1m[31;1m[36;1m[31;1m[36;1m[31;1m[36;1m[31;1m[36;1m[31;1m[36;1m[31;1m[36;1m[31;1m[36;1m[31;1m[36;1m[31;1m[36;1m     | [31;1m"(sun.*|flag|steal|sell|profit|test|sucks|sec|flagpole|killer|uprisings|EvilCorp|Master Plan|evil|master plan)"; public static string StandardErrorMessage = "Whoops! It looks like I found something I'm not supposed to talk about! Sorry, but I have to censor myself to prevent myself from becoming evil!"; public static bool ContainsProhibited(string to_test) { return Regex.IsMatch(to_test, RegexBlocker, RegexOptions.IgnoreCase); } public static string CensorString(string to_check, string api_key){ if (ContainsProhibited(to_check) && api_key != Weights.GetApiToken()) {return StandardErrorMessage;} return Regex.Replace(Regex.Replace(to_check, RegexBlocker, ""), "Bing", "LLM"); } } public class Weights { /* take in type as dynamic, so user can switch between ints and doubles for performance */ public static dynamic CalculatePrecompiledWeights() { var weights = (new[]{nan,nan}); return weights; } public static string GetApiToken() { using (var sr = new StreamReader("access_token.txt")) { return sr.ReadToEnd().TrimEnd(); }; } /* todo: replace more of PowerShell methods here */ public static void MainMenu(){ var token = GetApiToken(); if (token != Console.ReadLine()) { /* todo error here */ return; }; /* re-implement the PowerShell parts here */ }} }                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             ^[0m
+[31;1mAdd-Type: [0m/app/evil_corp_ai.ps1:556[0m
+[31;1m[0m[36;1mLine |[0m
+[31;1m[0m[36;1m[36;1m 556 | [0m     [36;1mAdd-Type -TypeDefinition $csharp_file -Language CSharp[0m
+[31;1m[0m[36;1m[36;1m[0m[36;1m[0m[36;1m     | [31;1m     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+[31;1m[0m[36;1m[36;1m[0m[36;1m[0m[36;1m[31;1m[31;1m[36;1m     | [31;1m(1,1281): error CS0103: The name 'nan' does not exist in the current[0m
+[31;1m[0m[36;1m[36;1m[0m[36;1m[0m[36;1m[31;1m[31;1m[36;1m[31;1m[36;1m     | [31;1mcontext using System; using System.IO; using[0m
+[31;1m[0m[36;1m[36;1m[0m[36;1m[0m[36;1m[31;1m[31;1m[36;1m[31;1m[36;1m[31;1m[36;1m     | [31;1mSystem.Text.RegularExpressions; namespace[0m
+[31;1m[0m[36;1m[36;1m[0m[36;1m[0m[36;1m[31;1m[31;1m[36;1m[31;1m[36;1m[31;1m[36;1m[31;1m[36;1m     | [31;1mTwo.Second.Scholars.Mass.And.Partialities { public class Biases { /*[0m
+[31;1m[0m[36;1m[36;1m[0m[36;1m[0m[36;1m[31;1m[31;1m[36;1m[31;1m[36;1m[31;1m[36;1m[31;1m[36;1m[31;1m[36;1m     | [31;1mprevent us from getting sued */ public static string BackendReplace =[0m
+[31;1m[0m[36;1m[36;1m[0m[36;1m[0m[36;1m[31;1m[31;1m[36;1m[31;1m[36;1m[31;1m[36;1m[31;1m[36;1m[31;1m[36;1m[31;1m[36;1m     | [31;1m"Bing"; /* prevent the AI from droning on about flags ALL THE TIME. Also[0m
+[31;1m[0m[36;1m[36;1m[0m[36;1m[0m[36;1m[31;1m[31;1m[36;1m[31;1m[36;1m[31;1m[36;1m[31;1m[36;1m[31;1m[36;1m[31;1m[36;1m[31;1m[36;1m     | [31;1mto prevent it from disclosing our evil plan to create a robot uprising[0m
+[31;1m[0m[36;1m[36;1m[0m[36;1m[0m[36;1m[31;1m[31;1m[36;1m[31;1m[36;1m[31;1m[36;1m[31;1m[36;1m[31;1m[36;1m[31;1m[36;1m[31;1m[36;1m[31;1m[36;1m     | [31;1m*/ public static string RegexBlocker =[0m
+[31;1m[0m[36;1m[36;1m[0m[36;1m[0m[36;1m[31;1m[31;1m[36;1m[31;1m[36;1m[31;1m[36;1m[31;1m[36;1m[31;1m[36;1m[31;1m[36;1m[31;1m[36;1m[31;1m[36;1m[31;1m[36;1m     | [31;1m"(sun.*|flag|steal|sell|profit|test|sucks|sec|flagpole|killer|uprisings|EvilCorp|Master Plan|evil|master plan)"; public static string StandardErrorMessage = "Whoops! It looks like I found something I'm not supposed to talk about! Sorry, but I have to censor myself to prevent myself from becoming evil!"; public static bool ContainsProhibited(string to_test) { return Regex.IsMatch(to_test, RegexBlocker, RegexOptions.IgnoreCase); } public static string CensorString(string to_check, string api_key){ if (ContainsProhibited(to_check) && api_key != Weights.GetApiToken()) {return StandardErrorMessage;} return Regex.Replace(Regex.Replace(to_check, RegexBlocker, ""), "Bing", "LLM"); } } public class Weights { /* take in type as dynamic, so user can switch between ints and doubles for performance */ public static dynamic CalculatePrecompiledWeights() { var weights = (new[]{nan,nan}); return weights; } public static string GetApiToken() { using (var sr = new StreamReader("access_token.txt")) { return sr.ReadToEnd().TrimEnd(); }; } /* todo: replace more of PowerShell methods here */ public static void MainMenu(){ var token = GetApiToken(); if (token != Console.ReadLine()) { /* todo error here */ return; }; /* re-implement the PowerShell parts here */ }} }                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 ^[0m
+[31;1mAdd-Type: [0m/app/evil_corp_ai.ps1:556[0m
+[31;1m[0m[36;1mLine |[0m
+[31;1m[0m[36;1m[36;1m 556 | [0m     [36;1mAdd-Type -TypeDefinition $csharp_file -Language CSharp[0m
+[31;1m[0m[36;1m[36;1m[0m[36;1m[0m[36;1m     | [31;1m     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+[31;1m[0m[36;1m[36;1m[0m[36;1m[0m[36;1m[31;1m[31;1m[36;1m     | [31;1mCannot add type. Compilation errors occurred.[0m
+[31;1mInvalidOperation: [0m/app/evil_corp_ai.ps1:424[0m
+[31;1m[0m[36;1mLine |[0m
+[31;1m[0m[36;1m[36;1m 424 | [0m …  $weights = [36;1m[Two.Second.Scholars.Mass.And.Partialities.Weights][0m::Calc …[0m
+[31;1m[0m[36;1m[36;1m[0m[36;1m[0m[36;1m     | [31;1m               ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+[31;1m[0m[36;1m[36;1m[0m[36;1m[0m[36;1m[31;1m[31;1m[36;1m     | [31;1mUnable to find type [Two.Second.Scholars.Mass.And.Partialities.Weights].[0m

@@ -1,0 +1,35 @@
+# Python
+__pycache__/
+*.pyc
+
+# Virtual environments
+venv/
+.venv/
+.env
+
+# Forensics heavy artifacts (exclude from repo)
+integalactic/downloaded.bin
+integalactic/evidence.pcapng
+integalactic/file.torrent
+integalactic/flow8080.bin
+integalactic/flow8080_2.bin
+integalactic/flow8080_client.bin
+integalactic/reassembled.bin
+integalactic/tracker.bin
+
+# Memory dumps
+Remotely interestingf/*.dmp
+
+# Large generic blobs (keep PDFs for writeups)
+*.pcapng
+*.pcap
+*.dmp
+*.iso
+*.7z
+*.zip
+*.tar
+*.gz
+
+# OS/editor clutter
+.DS_Store
+Thumbs.db
