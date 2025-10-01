@@ -1,4 +1,4 @@
-# SunshineCTF 2025 — Writeups
+# SunshineCTF 2025 - Writeups
 
 
 
